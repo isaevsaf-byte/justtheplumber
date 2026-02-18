@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/server';
 
 export async function Header() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Auth unavailable — continue as logged out
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
