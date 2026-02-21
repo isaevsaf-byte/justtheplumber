@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { getPlumberBySlug } from '@/lib/dal/plumber';
+import { createClient } from '@supabase/supabase-js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase/config';
 
 export const runtime = 'edge';
 export const alt = 'JustThePlumber Profile';
@@ -8,7 +9,20 @@ export const contentType = 'image/png';
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const plumber = await getPlumberBySlug(slug);
+
+  let plumber: { business_name: string; display_postcode: string; hourly_rate_day_pence: number; callout_charge_pence: number } | null = null;
+
+  try {
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data } = await supabase
+      .from('view_profiles_public')
+      .select('business_name, display_postcode, hourly_rate_day_pence, callout_charge_pence')
+      .eq('slug', slug)
+      .single();
+    plumber = data;
+  } catch {
+    // Fallback to generic image
+  }
 
   if (!plumber) {
     return new ImageResponse(

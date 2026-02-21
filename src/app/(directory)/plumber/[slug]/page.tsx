@@ -16,14 +16,18 @@ interface ProfilePageProps {
 }
 
 export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const plumber = await getPlumberBySlug(slug);
-  if (!plumber) return { title: 'Not Found' };
+  try {
+    const { slug } = await params;
+    const plumber = await getPlumberBySlug(slug);
+    if (!plumber) return { title: 'Not Found' };
 
-  return {
-    title: `${plumber.business_name} — JustThePlumber`,
-    description: `${plumber.business_name} in ${plumber.display_postcode}. Day rate: £${(plumber.hourly_rate_day_pence / 100).toFixed(0)}/hr. No middleman fees.`,
-  };
+    return {
+      title: `${plumber.business_name} — JustThePlumber`,
+      description: `${plumber.business_name} in ${plumber.display_postcode}. Day rate: £${(plumber.hourly_rate_day_pence / 100).toFixed(0)}/hr. No middleman fees.`,
+    };
+  } catch {
+    return { title: 'Plumber Profile — JustThePlumber' };
+  }
 }
 
 export default async function PlumberProfilePage({ params }: ProfilePageProps) {
@@ -31,8 +35,14 @@ export default async function PlumberProfilePage({ params }: ProfilePageProps) {
   const plumber = await getPlumberBySlug(slug);
   if (!plumber) notFound();
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data?.user ?? null;
+  } catch {
+    // Auth check failed — treat as unauthenticated
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 space-y-6">

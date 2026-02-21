@@ -1,5 +1,4 @@
 import 'server-only';
-import { unstable_cache } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 export interface PlumberProfile {
@@ -23,19 +22,21 @@ export interface PlumberProfile {
 }
 
 export const getPlumberBySlug = async (slug: string): Promise<PlumberProfile | null> => {
-  return unstable_cache(
-    async () => {
-      const supabase = await createClient();
-      const { data, error } = await supabase
-        .from('view_profiles_public')
-        .select('*')
-        .eq('slug', slug)
-        .single();
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('view_profiles_public')
+      .select('*')
+      .eq('slug', slug)
+      .single();
 
-      if (error || !data) return null;
-      return data as PlumberProfile;
-    },
-    [`plumber-${slug}`],
-    { revalidate: 3600, tags: [`plumber-${slug}`] }
-  )();
+    if (error) {
+      console.error('getPlumberBySlug error:', error.message);
+      return null;
+    }
+    return data as PlumberProfile;
+  } catch (err) {
+    console.error('getPlumberBySlug failed:', err);
+    return null;
+  }
 };
