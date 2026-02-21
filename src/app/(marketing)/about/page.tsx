@@ -12,50 +12,60 @@ export default function AboutPage() {
 
       <div className="prose prose-gray max-w-none space-y-4">
         <p className="text-lg text-gray-700">
-          One Sunday night, a pipe burst. Nothing dramatic — just a leak under
-          the kitchen sink. The kind of thing any plumber could fix in twenty minutes.
+          One Sunday night, a stopcock failed in the study. Nothing dramatic —
+          just a steady leak from the main internal valve. The kind of thing any
+          plumber could sort in twenty minutes.
         </p>
 
         <p className="text-gray-700">
-          The bill came to <strong>£503</strong>. Not because the plumber was expensive,
-          but because the &quot;emergency plumber service&quot; — the middleman who answered the
-          phone — took their cut. A hefty one.
+          The bill came to <strong>£503</strong>.
         </p>
 
         <p className="text-gray-700">
-          That&apos;s why JustThePlumber exists. It connects you directly with local plumbers
-          who show their real prices upfront. No agency, no platform fee, no markup.
+          Not because the plumber was expensive. Because the &quot;emergency plumber
+          service&quot; — the middleman who answered the phone — took their cut. A hefty
+          one. For doing nothing but passing on a phone number.
+        </p>
+
+        <p className="text-gray-700">
+          That night, JustThePlumber was born.
+        </p>
+
+        <p className="text-gray-700">
+          It connects you directly with local plumbers who show their real prices
+          upfront. No agency. No platform fee. No markup. No middleman between you
+          and the person who actually fixes your pipes.
         </p>
 
         <div className="rounded-lg bg-blue-50 p-6 my-8">
           <p className="font-medium text-blue-900">
-            Built by Saf after a £503 emergency plumber bill. Always free. No fees for
-            plumbers, no fees for you. Just honest pricing and a direct line.
+            Built by Saf. Always free. Always will be.
           </p>
         </div>
 
         <h2 className="text-xl font-bold mt-8">How it stays free</h2>
 
         <p className="text-gray-700">
-          JustThePlumber has no investors, no ads, and no revenue model. It runs on
-          free-tier infrastructure and costs nothing to operate. It exists purely to
-          stop people getting ripped off when their pipes burst.
+          JustThePlumber has no investors, no ads, and no business model. It runs on
+          free-tier infrastructure and is maintained as a public service. It exists
+          for one reason: to stop people getting ripped off when their pipes burst
+          at the worst possible moment.
         </p>
 
         <h2 className="text-xl font-bold mt-8">The rules</h2>
 
-        <ul className="list-disc list-inside text-gray-700 space-y-2">
-          <li>Plumbers list for free, forever.</li>
-          <li>Customers search and contact for free, forever.</li>
-          <li>All plumbers must display their real prices upfront.</li>
-          <li>No middleman ever touches the connection between you and the plumber.</li>
-          <li>No reviews, no ratings (yet) — just transparent pricing and direct contact.</li>
-        </ul>
+        <p className="text-gray-700">
+          Plumbers list for free, forever. Customers search and contact for free,
+          forever. Every plumber must display their callout charge and hourly rates —
+          day and night — before they appear in a single search result. No middleman
+          ever touches the connection between you and the plumber. You find them, you
+          contact them directly, you deal with them and only them.
+        </p>
 
         <h2 className="text-xl font-bold mt-8">Contact</h2>
 
         <p className="text-gray-700">
-          Got feedback or found a bug? Email{' '}
+          Got feedback, found a bug, or want to help?{' '}
           <a href="mailto:hello@justtheplumber.co.uk" className="text-blue-600 hover:underline">
             hello@justtheplumber.co.uk
           </a>
