@@ -103,6 +103,18 @@ export default function SignupPage() {
         return;
       }
 
+      // Check if user already has a profile
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+
+      if (existingProfile) {
+        router.push('/dashboard');
+        return;
+      }
+
       const slug = generateSlug(form.business_name);
 
       const { error } = await supabase.from('profiles').insert({
@@ -110,9 +122,9 @@ export default function SignupPage() {
         business_name: form.business_name,
         slug,
         bio: form.bio || null,
-        callout_charge_pence: Math.round(parseFloat(form.callout_charge) * 100),
-        hourly_rate_day_pence: Math.round(parseFloat(form.hourly_rate_day) * 100),
-        hourly_rate_night_pence: Math.round(parseFloat(form.hourly_rate_night) * 100),
+        callout_charge_pence: Math.round((parseFloat(form.callout_charge) || 0) * 100),
+        hourly_rate_day_pence: Math.round((parseFloat(form.hourly_rate_day) || 0) * 100),
+        hourly_rate_night_pence: Math.round((parseFloat(form.hourly_rate_night) || 0) * 100),
         services: form.services,
         gas_safe_number: form.gas_safe_number || null,
         phone_number: form.phone_number,
@@ -134,9 +146,9 @@ export default function SignupPage() {
             business_name: form.business_name,
             slug: retrySlug,
             bio: form.bio || null,
-            callout_charge_pence: Math.round(parseFloat(form.callout_charge) * 100),
-            hourly_rate_day_pence: Math.round(parseFloat(form.hourly_rate_day) * 100),
-            hourly_rate_night_pence: Math.round(parseFloat(form.hourly_rate_night) * 100),
+            callout_charge_pence: Math.round((parseFloat(form.callout_charge) || 0) * 100),
+            hourly_rate_day_pence: Math.round((parseFloat(form.hourly_rate_day) || 0) * 100),
+            hourly_rate_night_pence: Math.round((parseFloat(form.hourly_rate_night) || 0) * 100),
             services: form.services,
             gas_safe_number: form.gas_safe_number || null,
             phone_number: form.phone_number,
@@ -156,7 +168,9 @@ export default function SignupPage() {
 
       router.push('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      const msg = err instanceof Error ? err.message : typeof err === 'object' && err !== null && 'message' in err ? String((err as { message: string }).message) : 'Something went wrong. Please try again.';
+      console.error('Signup error:', err);
+      setError(msg);
     }
     setLoading(false);
   }
